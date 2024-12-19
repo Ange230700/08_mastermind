@@ -28,7 +28,7 @@
     "*.{js,css,md}": "prettier --write"
   },
   "validate-branch-name": {
-    "pattern": "^(master|main|develop){1}$|^(feature|fix|hotfix|release)/.+$",
+    "pattern": "^(master|main|development){1}$|^(feature|fix|test|chore|refactor|ci)/.+$",
     "errorMsg": "Make sure to give a valid branch name."
   }
 }
