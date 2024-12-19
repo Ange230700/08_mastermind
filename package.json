@@ -8,7 +8,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "prettier-watch": "onchange \"**/*\" -- prettier --write --ignore-unknown {{changed}}",
-    "prepare": "husky && husky install"
+    "prepare": "husky"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.6.1",
@@ -28,7 +28,7 @@
     "*.{js,css,md}": "prettier --write"
   },
   "validate-branch-name": {
-    "pattern": "^(master|main|develop){1}$|^(feature|fix|hotfix|release)\/.+$",
+    "pattern": "^(master|main|develop){1}$|^(feature|fix|hotfix|release)/.+$",
     "errorMsg": "Make sure to give a valid branch name."
   }
 }
