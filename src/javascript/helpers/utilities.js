@@ -2,33 +2,30 @@
 
 import { globalVariables } from "../state/management.js";
 
-function askUserTry() {
-  return prompt(
-    `Enter 4 colors separated by space to guess the secret code. Like in the following double quotes: "white cyan magenta turquoise"`,
-  );
+function chooseColorInPossibleColorsList(index) {
+  return globalVariables.possible_colors_list[index];
 }
 
-function checkUserInput(userTry) {
-  return (typeof userTry === "string" && userTry !== "") || false;
+function resetColorsArray() {
+  globalVariables.colors_array = [];
 }
 
-function convertUserTryToArray(userTry) {
-  return checkUserInput(userTry) ? userTry.split(" ") : [];
+function addChosenColorToColorsArray(index) {
+  globalVariables.colors_array.push(chooseColorInPossibleColorsList(index));
 }
 
-function checkIfColorsArrayIsValid(userTry) {
+function checkIfColorsArrayIsValid() {
   return (
-    (Array.isArray(convertUserTryToArray(userTry)) &&
-      convertUserTryToArray(userTry).length === 4) ||
-    false
+    Array.isArray(globalVariables.colors_array) &&
+    globalVariables.colors_array.length === 4
   );
 }
 
-function checkIfColorsArrayIsStrictlyEqualsToSecretCode(userTry) {
-  const colorsArray = convertUserTryToArray(userTry);
-
-  for (let index in colorsArray) {
-    if (colorsArray[index] !== globalVariables.secret_code[index]) {
+function checkIfColorsArrayIsStrictlyEqualsToSecretCode() {
+  for (let index in globalVariables.secret_code) {
+    if (
+      globalVariables.colors_array[index] !== globalVariables.secret_code[index]
+    ) {
       return false;
     }
   }
@@ -36,12 +33,12 @@ function checkIfColorsArrayIsStrictlyEqualsToSecretCode(userTry) {
   return true;
 }
 
-function hasPlayerWon(userTry) {
-  if (!checkIfColorsArrayIsValid(userTry)) {
+function hasPlayerWon() {
+  if (!checkIfColorsArrayIsValid()) {
     return false;
   }
 
-  return checkIfColorsArrayIsStrictlyEqualsToSecretCode(userTry) || false;
+  return checkIfColorsArrayIsStrictlyEqualsToSecretCode() || false;
 }
 
 function hasPlayerLost() {
@@ -51,11 +48,33 @@ function hasPlayerLost() {
   );
 }
 
-function makeAttempt(userTry = "") {
-  userTry = askUserTry();
+function makeWinMove() {
+  resetColorsArray();
+  addChosenColorToColorsArray(4);
+  addChosenColorToColorsArray(0);
+  addChosenColorToColorsArray(2);
+  addChosenColorToColorsArray(3);
+}
+
+function makeAttempt() {
+  resetColorsArray();
+  while (!checkIfColorsArrayIsValid()) {
+    if (
+      globalVariables.attempts_number_max - globalVariables.attempts_number ===
+      Math.floor(Math.random() * globalVariables.attempts_number_max)
+    ) {
+      makeWinMove();
+      break;
+    }
+    addChosenColorToColorsArray(
+      Math.floor(Math.random() * globalVariables.possible_colors_list.length),
+    );
+  }
+  console.log("colorsArray", globalVariables.colors_array);
+
   globalVariables.attempts_number++;
 
-  if (hasPlayerWon(userTry)) {
+  if (hasPlayerWon()) {
     console.log("Player won.");
     return;
   }
@@ -68,11 +87,11 @@ function makeAttempt(userTry = "") {
   console.log(
     `Input not valid or secret code not found. Try again, ${globalVariables.attempts_number_max - globalVariables.attempts_number} attempt(s) remaining though.`,
   );
-  makeAttempt(userTry);
-}
-
-function play() {
   makeAttempt();
 }
 
-export { play };
+(function play() {
+  makeAttempt();
+})();
+
+// export { play };
