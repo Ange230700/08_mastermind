@@ -1,6 +1,7 @@
 const globalVariables = {
   secret_code: ["blue", "red", "yellow", "green"],
   attempts_number: 0,
+  attempts_number_max: 12,
   colors_list: [
     "red",
     "orange",
