@@ -50,10 +50,18 @@ function hasPlayerLost() {
 
 function makeWinMove() {
   resetColorsArray();
-  addChosenColorToColorsArray(4);
-  addChosenColorToColorsArray(0);
-  addChosenColorToColorsArray(2);
-  addChosenColorToColorsArray(3);
+  addChosenColorToColorsArray(
+    globalVariables.possible_colors_list.indexOf("blue"),
+  );
+  addChosenColorToColorsArray(
+    globalVariables.possible_colors_list.indexOf("blue"),
+  );
+  addChosenColorToColorsArray(
+    globalVariables.possible_colors_list.indexOf("yellow"),
+  );
+  addChosenColorToColorsArray(
+    globalVariables.possible_colors_list.indexOf("green"),
+  );
 }
 
 function makeAttempt() {
@@ -70,7 +78,6 @@ function makeAttempt() {
       Math.floor(Math.random() * globalVariables.possible_colors_list.length),
     );
   }
-  console.log("colorsArray", globalVariables.colors_array);
 
   globalVariables.attempts_number++;
 
@@ -90,8 +97,8 @@ function makeAttempt() {
   makeAttempt();
 }
 
-(function play() {
+function play() {
   makeAttempt();
-})();
+}
 
-// export { play };
+export { play };

@@ -1,5 +1,5 @@
 const globalVariables = {
-  secret_code: ["blue", "red", "yellow", "green"],
+  secret_code: ["blue", "blue", "yellow", "green"],
   attempts_number: 0,
   attempts_number_max: 12,
   colors_array: [],
