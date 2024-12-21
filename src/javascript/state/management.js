@@ -1,3 +1,5 @@
+// src\javascript\state\management.js
+
 const globalVariables = {
   secret_code: ["blue", "blue", "yellow", "green"],
   attempts_number: 0,
