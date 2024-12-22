@@ -2,16 +2,12 @@
 
 import { globalVariables } from "../state/management.js";
 
-function chooseColorInPossibleColorsList(index) {
-  return globalVariables.possible_colors_list[index];
-}
-
 function resetColorsArray() {
   globalVariables.colors_array = [];
 }
 
-function addChosenColorToColorsArray(index) {
-  globalVariables.colors_array.push(chooseColorInPossibleColorsList(index));
+function addChosenColorToColorsArray(color) {
+  globalVariables.colors_array.push(color);
 }
 
 function checkIfColorsArrayIsValid() {
@@ -34,10 +30,6 @@ function checkIfColorsArrayIsStrictlyEqualsToSecretCode() {
 }
 
 function hasPlayerWon() {
-  if (!checkIfColorsArrayIsValid()) {
-    return false;
-  }
-
   return checkIfColorsArrayIsStrictlyEqualsToSecretCode() || false;
 }
 
@@ -48,57 +40,10 @@ function hasPlayerLost() {
   );
 }
 
-function makeWinMove() {
-  resetColorsArray();
-  addChosenColorToColorsArray(
-    globalVariables.possible_colors_list.indexOf("blue"),
-  );
-  addChosenColorToColorsArray(
-    globalVariables.possible_colors_list.indexOf("blue"),
-  );
-  addChosenColorToColorsArray(
-    globalVariables.possible_colors_list.indexOf("yellow"),
-  );
-  addChosenColorToColorsArray(
-    globalVariables.possible_colors_list.indexOf("green"),
-  );
-}
-
-function makeAttempt() {
-  resetColorsArray();
-  while (!checkIfColorsArrayIsValid()) {
-    if (
-      globalVariables.attempts_number_max - globalVariables.attempts_number ===
-      Math.floor(Math.random() * globalVariables.attempts_number_max)
-    ) {
-      makeWinMove();
-      break;
-    }
-    addChosenColorToColorsArray(
-      Math.floor(Math.random() * globalVariables.possible_colors_list.length),
-    );
-  }
-
-  globalVariables.attempts_number++;
-
-  if (hasPlayerWon()) {
-    console.log("Player won.");
-    return;
-  }
-
-  if (hasPlayerLost()) {
-    console.log("Player lost.");
-    return;
-  }
-
-  console.log(
-    `Input not valid or secret code not found. Try again, ${globalVariables.attempts_number_max - globalVariables.attempts_number} attempt(s) remaining though.`,
-  );
-  makeAttempt();
-}
-
-function play() {
-  makeAttempt();
-}
-
-export { play };
+export {
+  checkIfColorsArrayIsValid,
+  hasPlayerWon,
+  hasPlayerLost,
+  resetColorsArray,
+  addChosenColorToColorsArray,
+};
