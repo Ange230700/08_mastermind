@@ -1,5 +1,7 @@
 // src\javascript\state\management.js
 
+import { resetColorsArray } from "../helpers/utilities.js";
+
 const globalVariables = {
   secret_code: ["blue", "blue", "yellow", "green"],
   attempts_number: 0,
@@ -15,6 +17,12 @@ const globalVariables = {
     "violet",
     "black",
   ],
+  current_slot_index: 0,
 };
 
-export { globalVariables };
+function resetAppState() {
+  globalVariables.attempts_number = 0;
+  resetColorsArray();
+}
+
+export { globalVariables, resetAppState };
