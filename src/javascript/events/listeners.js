@@ -1,9 +1,31 @@
 // src\javascript\events\listeners.js
 
-import { handleLoadingOfDomContent } from "./handlers.js";
+import {
+  handleClickOnColorButtons,
+  handleClickOnSubmitButton,
+  handleLoadingOfDomContent,
+} from "./handlers.js";
 
 function waitForLoadingOfDomContent() {
   document.addEventListener("DOMContentLoaded", handleLoadingOfDomContent);
 }
 
-export { waitForLoadingOfDomContent };
+function waitForClickOnColorButtons() {
+  document.querySelectorAll(".color-button").forEach((button) => {
+    button.addEventListener("click", () => {
+      handleClickOnColorButtons(button);
+    });
+  });
+}
+
+function waitForClickOnSubmitButton() {
+  document
+    .getElementById("submit-guess")
+    .addEventListener("click", handleClickOnSubmitButton);
+}
+
+export {
+  waitForLoadingOfDomContent,
+  waitForClickOnColorButtons,
+  waitForClickOnSubmitButton,
+};
