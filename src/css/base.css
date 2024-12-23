@@ -22,9 +22,9 @@ html {
   scroll-behavior: smooth;
 }
 
+html,
 body {
   display: flex;
-  flex-direction: column;
 }
 
 button {
@@ -32,6 +32,8 @@ button {
   background-color: transparent;
 }
 
+body,
 #app {
   flex: 1;
+  place-items: center;
 }
