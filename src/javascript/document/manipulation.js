@@ -25,23 +25,23 @@ function updateSlotUI(button) {
 }
 
 function reportIssueIfInvalidAttempt() {
-  document.getElementById("message").textContent =
+  document.getElementById("message").innerHTML =
     "Please select exactly 4 colors.";
 }
 
 function reportVictory() {
-  document.getElementById("message").textContent =
+  document.getElementById("message").innerHTML =
     "You guessed the secret code! You win!";
   return;
 }
 
 function reportLoss() {
-  document.getElementById("message").textContent =
+  document.getElementById("message").innerHTML =
     "No more attempts left. You lost!";
 }
 
 function reportIncorrectGuess() {
-  document.getElementById("message").textContent =
+  document.getElementById("message").innerHTML =
     `Incorrect guess. ${globalVariables.attempts_number_max - globalVariables.attempts_number} attempt(s) remaining. Try again!`;
 }
 
@@ -58,7 +58,7 @@ function disableSubmitButton() {
   if (submitButton) {
     submitButton.disabled = true;
     submitButton.classList.add("disabled-button");
-    submitButton.textContent = "Game Over";
+    submitButton.innerHTML = "Game Over";
   }
 }
 
