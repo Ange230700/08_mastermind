@@ -3,6 +3,7 @@
 .app-container {
   max-width: 600px;
   margin: 2rem auto;
+  margin-bottom: auto;
   padding: 1rem;
   display: flex;
   flex-direction: column;
@@ -87,4 +88,14 @@
   opacity: 0.5;
   pointer-events: none;
   cursor: not-allowed;
+}
+
+footer {
+  text-align: center;
+  margin: 1rem 0;
+  font-size: 1.5rem;
+}
+
+footer a {
+  text-decoration: dotted underline;
 }

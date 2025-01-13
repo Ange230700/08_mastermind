@@ -29,6 +29,25 @@ function generateSlots() {
   return slots;
 }
 
+function generateFooter() {
+  return `
+    <footer>
+      <p>
+        Check out the project on
+        <strong>
+          <a
+            href="https://github.com/Ange230700/08_mastermind.git"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            GitHub
+          </a>
+        </strong>
+      </p>
+    </footer>
+  `;
+}
+
 function generateApp() {
   return `
     <div class="app-container">
@@ -47,6 +66,7 @@ function generateApp() {
       </div>
       <p id="message" class="message"></p>
     </div>
+    ${generateFooter()}
   `;
 }
 
