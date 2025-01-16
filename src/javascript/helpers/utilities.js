@@ -40,10 +40,20 @@ function hasPlayerLost() {
   );
 }
 
+function resetTempSecretCode() {
+  globalVariables.temp_secret_code = [];
+}
+
+function addColorToTempSecretCode(color) {
+  globalVariables.temp_secret_code.push(color);
+}
+
 export {
   checkIfColorsArrayIsValid,
   hasPlayerWon,
   hasPlayerLost,
   resetColorsArray,
   addChosenColorToColorsArray,
+  resetTempSecretCode,
+  addColorToTempSecretCode,
 };
