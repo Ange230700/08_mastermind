@@ -89,6 +89,23 @@ function setSecretCode(codeArray) {
   globalVariables.secret_code = [...codeArray];
 }
 
+function reRenderSlots() {
+  const slots = document.querySelectorAll(".slot");
+
+  // First clear them
+  slots.forEach((slot) => {
+    slot.style.backgroundColor = "var(--primary-color-shade-7)";
+  });
+
+  // Re-draw colors from the updated array
+  for (let i = 0; i < globalVariables.colors_array.length; i++) {
+    slots[i].style.backgroundColor = globalVariables.colors_array[i];
+  }
+
+  // Update the current slot index so new colors will be placed after the last filled slot
+  globalVariables.current_slot_index = globalVariables.colors_array.length;
+}
+
 export {
   displayApp,
   updateSlotUI,
@@ -101,4 +118,5 @@ export {
   updateTempSlotUI,
   resetTempSlotsUI,
   setSecretCode,
+  reRenderSlots,
 };

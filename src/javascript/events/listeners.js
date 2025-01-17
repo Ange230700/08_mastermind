@@ -8,6 +8,7 @@ import {
   handleConfirmSecretCode,
   handleClickOnCancelSetCodeButton,
   handleClickOnOpenSetCodeButton,
+  handleClickOnSlot,
 } from "./handlers.js";
 
 function waitForLoadingOfDomContent() {
@@ -56,6 +57,15 @@ function waitForClickOnConfirmSetCodeButton() {
   confirmButton.addEventListener("click", handleConfirmSecretCode);
 }
 
+function waitForClickOnSlots() {
+  // Select all .slot elements
+  document.querySelectorAll(".slot").forEach((slot) => {
+    slot.addEventListener("click", () => {
+      handleClickOnSlot(Number(slot.getAttribute("data-slot-index")));
+    });
+  });
+}
+
 export {
   waitForLoadingOfDomContent,
   waitForClickOnColorButtons,
@@ -64,4 +74,5 @@ export {
   waitForClickOnCancelSetCodeButton,
   waitForClickOnColorButtonsInModal,
   waitForClickOnConfirmSetCodeButton,
+  waitForClickOnSlots,
 };

@@ -48,6 +48,10 @@ function addColorToTempSecretCode(color) {
   globalVariables.temp_secret_code.push(color);
 }
 
+function removeColorFromColorsArray(index) {
+  globalVariables.colors_array.splice(index, 1);
+}
+
 export {
   checkIfColorsArrayIsValid,
   hasPlayerWon,
@@ -56,4 +60,5 @@ export {
   addChosenColorToColorsArray,
   resetTempSecretCode,
   addColorToTempSecretCode,
+  removeColorFromColorsArray,
 };

@@ -50,40 +50,42 @@ function generateFooter() {
 
 function generateApp() {
   return `
-    <div class="app-container">
-      <h1 class="app-title">Mastermind Game</h1>
-      <p class="instructions">
-        Pick 4 colors and then click <strong>"Submit Guess"</strong> to see if you cracked the code.
-      </p>
-      <div class="colors-container">
-        ${generateColorButtons()}
+    <div>
+      <div class="app-container">
+        <h1 class="app-title">Mastermind Game</h1>
+        <p class="instructions">
+          Pick 4 colors and then click <strong>"Submit Guess"</strong> to see if you cracked the code.
+        </p>
+        <div class="colors-container">
+          ${generateColorButtons()}
+        </div>
+        <div class="slots-container">
+          ${generateSlots()}
+        </div>
+        <div class="actions-container">
+          <button class="action" id="open-set-code">Set Secret Code</button>
+          <button class="action" id="submit-guess">Submit Guess</button>
+        </div>
+        <p id="message" class="message"></p>
       </div>
-      <div class="slots-container">
-        ${generateSlots()}
+      <div id="secret-code-modal" class="modal hidden">
+        <div class="modal-content">
+          <h2>Set Your Secret Code</h2>
+          <p>Pick 4 colors to set the code:</p>
+          <div class="code-colors-container">
+            ${generateColorButtons()}
+          </div>
+          <div class="code-slots-container">
+            ${generateSlots()}
+          </div>
+          <div class="modal-actions">
+            <button class="action" id="confirm-secret-code">Confirm Code</button>
+            <button class="action" id="cancel-secret-code">Cancel</button>
+          </div>
+          <p id="modal-message"></p>
+        </div>
       </div>
-      <div class="actions-container">
-        <button id="open-set-code">Set Secret Code</button>
-        <button id="submit-guess">Submit Guess</button>
       </div>
-      <p id="message" class="message"></p>
-    </div>
-    <div id="secret-code-modal" class="modal hidden">
-    <div class="modal-content">
-      <h2>Set Your Secret Code</h2>
-      <p>Pick 4 colors to set the code:</p>
-      <div class="code-colors-container">
-        ${generateColorButtons()}
-      </div>
-      <div class="code-slots-container">
-        ${generateSlots()}
-      </div>
-      <div class="modal-actions">
-        <button id="confirm-secret-code">Confirm Code</button>
-        <button id="cancel-secret-code">Cancel</button>
-      </div>
-      <p id="modal-message"></p>
-    </div>
-</div>
     ${generateFooter()}
   `;
 }
