@@ -16,11 +16,13 @@ function waitForLoadingOfDomContent() {
 }
 
 function waitForClickOnColorButtons() {
-  document.querySelectorAll(".color-button").forEach((button) => {
-    button.addEventListener("click", () => {
-      handleClickOnColorButtons(button);
+  document
+    .querySelectorAll(".colors-container .color-button")
+    .forEach((button) => {
+      button.addEventListener("click", () => {
+        handleClickOnColorButtons(button);
+      });
     });
-  });
 }
 
 function waitForClickOnSubmitButton() {
@@ -52,9 +54,9 @@ function waitForClickOnColorButtonsInModal() {
 }
 
 function waitForClickOnConfirmSetCodeButton() {
-  const confirmButton = document.getElementById("confirm-secret-code");
-  if (!confirmButton) return;
-  confirmButton.addEventListener("click", handleConfirmSecretCode);
+  document
+    .getElementById("confirm-secret-code")
+    ?.addEventListener("click", handleConfirmSecretCode);
 }
 
 function waitForClickOnSlots() {

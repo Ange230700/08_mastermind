@@ -89,9 +89,11 @@ const handleConfirmSecretCode = () => {
 
   // Hide the modal
   document.getElementById("secret-code-modal").classList.add("hidden");
+
   // Reset the temporary arrays/slots
   resetTempSecretCode();
   resetTempSlotsUI();
+
   document.getElementById("modal-message").innerHTML = "";
 };
 
