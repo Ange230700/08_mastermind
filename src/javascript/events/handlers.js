@@ -14,6 +14,7 @@ import {
   setSecretCode,
   reRenderSlots,
   updateButtonStates,
+  reportClues,
 } from "../document/manipulation.js";
 import {
   checkIfColorsArrayIsValid,
@@ -21,6 +22,7 @@ import {
   hasPlayerWon,
   resetTempSecretCode,
   removeColorFromColorsArray,
+  computeClues,
 } from "../helpers/utilities.js";
 import { globalVariables, resetAppState } from "../state/management.js";
 import {
@@ -76,6 +78,10 @@ const handleClickOnSubmitButton = () => {
     updateButtonStates();
     return;
   }
+
+  reportClues(
+    computeClues(globalVariables.colors_array, globalVariables.secret_code),
+  );
 
   reportIncorrectGuess();
   resetSlotsForNextGuess();
