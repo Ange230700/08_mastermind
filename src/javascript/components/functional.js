@@ -32,7 +32,7 @@ function generateSlots() {
 function generateHeader() {
   return `
     <header>
-      <h1 class="app-title">Mastermind Game</h1>
+      <h1 class="app-title">MASTERMIND</h1>
       <p class="game-description">
         Try to guess the secret combination of four colors.
       </p>
@@ -76,7 +76,8 @@ function generateApp() {
           <button class="action" id="reset-game">Reset Game</button>
         </div>
         <p id="message" class="message"></p>
-        <div id="clues" class="clues">
+        <div id="clues" class="clues hidden">
+          <h3 style="margin: 1rem 0">Clues</h3>
           <p id="well-placed"></p>
           <p id="misplaced"></p>
           <p id="not-in-code"></p>

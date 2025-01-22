@@ -58,6 +58,7 @@ function disableSubmitButton() {
   const submitButton = document.getElementById("submit-guess");
   if (submitButton) {
     submitButton.disabled = true;
+    submitButton.style.cursor = "not-allowed";
     submitButton.innerHTML = "Game Over";
   }
 }
@@ -128,13 +129,15 @@ function updateButtonStates() {
   resetButton.disabled = !hasMadeFirstGuess;
 }
 
-function reportClues({ wellPlaced, misplaced, notInCode }) {
-  // Just update the three <p> placeholders
-  document.getElementById("well-placed").textContent =
-    `Well placed: ${wellPlaced}`;
-  document.getElementById("misplaced").textContent = `Misplaced: ${misplaced}`;
-  document.getElementById("not-in-code").textContent =
-    `Not in code: ${notInCode}`;
+function reportClues({ wellPlacedColors, misplacedColors, notInCodeColors }) {
+  const cluesDiv = document.getElementById("clues");
+  cluesDiv.classList.remove("hidden");
+  document.getElementById("well-placed").innerHTML =
+    "<strong>Well placed</strong>: " + (wellPlacedColors.join(", ") || "None");
+  document.getElementById("misplaced").innerHTML =
+    "<strong>Misplaced</strong>: " + (misplacedColors.join(", ") || "None");
+  document.getElementById("not-in-code").innerHTML =
+    "<strong>Not in code</strong>: " + (notInCodeColors.join(", ") || "None");
 }
 
 export {
