@@ -13,7 +13,7 @@ import {
   resetTempSlotsUI,
   setSecretCode,
   reRenderSlots,
-  updateUIBasedOnGameState,
+  updateButtonStates,
 } from "../document/manipulation.js";
 import {
   checkIfColorsArrayIsValid,
@@ -46,10 +46,13 @@ const handleLoadingOfDomContent = () => {
   waitForClickOnColorButtonsInModal();
   waitForClickOnSlots();
   waitForClickOnResetButton();
+
+  updateButtonStates();
 };
 
 const handleClickOnColorButtons = (button) => {
   updateSlotUI(button);
+  updateButtonStates();
 };
 
 const handleClickOnSubmitButton = () => {
@@ -63,17 +66,20 @@ const handleClickOnSubmitButton = () => {
   if (hasPlayerWon()) {
     reportVictory();
     disableSubmitButton();
+    updateButtonStates();
     return;
   }
 
   if (hasPlayerLost()) {
     reportLoss();
     disableSubmitButton();
+    updateButtonStates();
     return;
   }
 
   reportIncorrectGuess();
   resetSlotsForNextGuess();
+  updateButtonStates();
 };
 
 const handleColorButtonForSecretCode = (button) => {
@@ -100,7 +106,7 @@ const handleConfirmSecretCode = () => {
   document.getElementById("modal-message").innerHTML = "";
 
   // <-- Trigger the UI update once the secret code is set
-  updateUIBasedOnGameState();
+  updateButtonStates();
 };
 
 const handleClickOnOpenSetCodeButton = () => {
@@ -116,13 +122,9 @@ const handleClickOnCancelSetCodeButton = () => {
 };
 
 const handleClickOnSlot = (slotIndex) => {
-  // Only remove if there’s actually a color at that position.
-  // (e.g., if the player has filled 3 colors, indices 0, 1, 2 are valid.)
-  // If slotIndex is outside the array length, do nothing.
-  if (slotIndex < globalVariables.colors_array.length) {
-    removeColorFromColorsArray(slotIndex);
-    reRenderSlots();
-  }
+  removeColorFromColorsArray(slotIndex);
+  reRenderSlots();
+  updateButtonStates();
 };
 
 const handleClickOnResetButton = () => {
@@ -139,12 +141,11 @@ const handleClickOnResetButton = () => {
   const submitButton = document.getElementById("submit-guess");
   if (submitButton) {
     submitButton.disabled = false;
-    submitButton.classList.remove("disabled-button");
     submitButton.innerHTML = "Submit Guess";
   }
 
   // 5. Re-show/hide relevant buttons
-  updateUIBasedOnGameState();
+  updateButtonStates();
 };
 
 export {

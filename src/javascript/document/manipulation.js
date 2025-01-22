@@ -58,7 +58,6 @@ function disableSubmitButton() {
   const submitButton = document.getElementById("submit-guess");
   if (submitButton) {
     submitButton.disabled = true;
-    submitButton.classList.add("disabled-button");
     submitButton.innerHTML = "Game Over";
   }
 }
@@ -106,27 +105,27 @@ function reRenderSlots() {
   globalVariables.current_slot_index = globalVariables.colors_array.length;
 }
 
-function updateUIBasedOnGameState() {
+function updateButtonStates() {
   const setCodeButton = document.getElementById("open-set-code");
-  const submitGuessButton = document.getElementById("submit-guess");
+  const submitButton = document.getElementById("submit-guess");
+  const resetButton = document.getElementById("reset-game");
 
-  if (!setCodeButton || !submitGuessButton) return;
+  if (!setCodeButton || !submitButton || !resetButton) return;
 
-  // If secret_code has 4 colors, we assume it's set
   const isCodeSet = globalVariables.secret_code.length === 4;
+  const hasMadeFirstGuess = globalVariables.attempts_number > 0;
+  const guessSlotsCount = globalVariables.colors_array.length;
 
-  if (isCodeSet) {
-    // Hide "Set Secret Code"
-    setCodeButton.style.display = "none";
-    // Show "Submit Guess"
-    submitGuessButton.style.display = "inline-block";
-    submitGuessButton.disabled = false;
-  } else {
-    // Show "Set Secret Code"
-    setCodeButton.style.display = "inline-block";
-    // Hide or disable "Submit Guess" if code not set
-    submitGuessButton.style.display = "none";
-  }
+  // 1. Once the first guess is made, disable “Set Secret Code”
+  setCodeButton.disabled = hasMadeFirstGuess;
+
+  // 2. “Submit Guess” is disabled if:
+  //    - code not yet set, OR
+  //    - guess slots not exactly 4
+  submitButton.disabled = !(isCodeSet && guessSlotsCount === 4);
+
+  // 3. “Reset Game” is disabled until a first guess is made
+  resetButton.disabled = !hasMadeFirstGuess;
 }
 
 export {
@@ -142,5 +141,5 @@ export {
   resetTempSlotsUI,
   setSecretCode,
   reRenderSlots,
-  updateUIBasedOnGameState,
+  updateButtonStates,
 };
