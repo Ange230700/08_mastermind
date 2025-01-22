@@ -1,7 +1,5 @@
 // src\javascript\state\management.js
 
-// import { resetColorsArray } from "../helpers/utilities.js";
-
 const globalVariables = {
   secret_code: [],
   attempts_number: 0,

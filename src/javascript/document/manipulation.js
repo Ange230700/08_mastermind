@@ -128,6 +128,15 @@ function updateButtonStates() {
   resetButton.disabled = !hasMadeFirstGuess;
 }
 
+function reportClues({ wellPlaced, misplaced, notInCode }) {
+  // Just update the three <p> placeholders
+  document.getElementById("well-placed").textContent =
+    `Well placed: ${wellPlaced}`;
+  document.getElementById("misplaced").textContent = `Misplaced: ${misplaced}`;
+  document.getElementById("not-in-code").textContent =
+    `Not in code: ${notInCode}`;
+}
+
 export {
   displayApp,
   updateSlotUI,
@@ -142,4 +151,5 @@ export {
   setSecretCode,
   reRenderSlots,
   updateButtonStates,
+  reportClues,
 };

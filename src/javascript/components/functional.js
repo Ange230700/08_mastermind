@@ -71,11 +71,16 @@ function generateApp() {
           ${generateSlots()}
         </div>
         <div class="actions-container">
-        <button class="action" id="open-set-code">Set Secret Code</button>
-        <button class="action" id="submit-guess">Submit Guess</button>
-        <button class="action" id="reset-game">Reset Game</button>
+          <button class="action" id="open-set-code">Set Secret Code</button>
+          <button class="action" id="submit-guess">Submit Guess</button>
+          <button class="action" id="reset-game">Reset Game</button>
         </div>
         <p id="message" class="message"></p>
+        <div id="clues" class="clues">
+          <p id="well-placed"></p>
+          <p id="misplaced"></p>
+          <p id="not-in-code"></p>
+        </div>
       </div>
       <div id="secret-code-modal" class="modal hidden">
         <div class="modal-content">
