@@ -86,12 +86,6 @@
   margin-top: 1rem;
 }
 
-.disabled-button {
-  opacity: 0.5;
-  pointer-events: none;
-  cursor: not-allowed;
-}
-
 footer {
   text-align: center;
   margin: 1rem 0;
@@ -163,4 +157,11 @@ footer a {
   display: flex;
   justify-content: space-evenly;
   padding: 5px 0;
+}
+
+button:disabled {
+  background-color: var(--primary-color-shade-7);
+  color: var(--primary-color-shade-3);
+  opacity: 0.5;
+  cursor: not-allowed;
 }
