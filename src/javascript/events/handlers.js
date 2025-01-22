@@ -66,6 +66,8 @@ const handleClickOnSubmitButton = () => {
   globalVariables.attempts_number++;
 
   if (hasPlayerWon()) {
+    const cluesDiv = document.getElementById("clues");
+    cluesDiv.classList.add("hidden");
     reportVictory();
     disableSubmitButton();
     updateButtonStates();
@@ -73,6 +75,8 @@ const handleClickOnSubmitButton = () => {
   }
 
   if (hasPlayerLost()) {
+    const cluesDiv = document.getElementById("clues");
+    cluesDiv.classList.add("hidden");
     reportLoss();
     disableSubmitButton();
     updateButtonStates();
@@ -104,6 +108,10 @@ const handleConfirmSecretCode = () => {
 
   // Hide the modal
   document.getElementById("secret-code-modal").classList.add("hidden");
+
+  // Show a message that the code is now set
+  document.getElementById("message").innerHTML =
+    "Your secret code is now set. Start guessing!";
 
   // Reset the temporary arrays/slots
   resetTempSecretCode();
@@ -149,6 +157,9 @@ const handleClickOnResetButton = () => {
     submitButton.disabled = false;
     submitButton.innerHTML = "Submit Guess";
   }
+
+  // 5. Hide the clues again
+  document.getElementById("clues").classList.add("hidden");
 
   // 5. Re-show/hide relevant buttons
   updateButtonStates();
