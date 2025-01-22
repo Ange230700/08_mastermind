@@ -4,6 +4,7 @@ import { generateApp } from "../components/functional.js";
 import {
   addChosenColorToColorsArray,
   resetColorsArray,
+  addColorToTempSecretCode,
 } from "../helpers/utilities.js";
 import { globalVariables } from "../state/management.js";
 
@@ -62,6 +63,72 @@ function disableSubmitButton() {
   }
 }
 
+function updateTempSlotUI(button) {
+  if (globalVariables.temp_secret_code.length < 4) {
+    addColorToTempSecretCode(button.getAttribute("data-color"));
+    document.querySelectorAll("#secret-code-modal .slot")[
+      globalVariables.current_temp_slot_index
+    ].style.backgroundColor = button.getAttribute("data-color");
+
+    globalVariables.current_temp_slot_index++;
+  }
+}
+
+function resetTempSlotsUI() {
+  // Clear the color from each slot
+  document
+    .querySelectorAll("#secret-code-modal .slot")
+    .forEach(
+      (slot) => (slot.style.backgroundColor = "var(--primary-color-shade-7)"),
+    );
+
+  globalVariables.current_temp_slot_index = 0;
+}
+
+function setSecretCode(codeArray) {
+  globalVariables.secret_code = [...codeArray];
+}
+
+function reRenderSlots() {
+  const slots = document.querySelectorAll(".slot");
+
+  // First clear them
+  slots.forEach((slot) => {
+    slot.style.backgroundColor = "var(--primary-color-shade-7)";
+  });
+
+  // Re-draw colors from the updated array
+  for (let i = 0; i < globalVariables.colors_array.length; i++) {
+    slots[i].style.backgroundColor = globalVariables.colors_array[i];
+  }
+
+  // Update the current slot index so new colors will be placed after the last filled slot
+  globalVariables.current_slot_index = globalVariables.colors_array.length;
+}
+
+function updateUIBasedOnGameState() {
+  const setCodeButton = document.getElementById("open-set-code");
+  const submitGuessButton = document.getElementById("submit-guess");
+
+  if (!setCodeButton || !submitGuessButton) return;
+
+  // If secret_code has 4 colors, we assume it's set
+  const isCodeSet = globalVariables.secret_code.length === 4;
+
+  if (isCodeSet) {
+    // Hide "Set Secret Code"
+    setCodeButton.style.display = "none";
+    // Show "Submit Guess"
+    submitGuessButton.style.display = "inline-block";
+    submitGuessButton.disabled = false;
+  } else {
+    // Show "Set Secret Code"
+    setCodeButton.style.display = "inline-block";
+    // Hide or disable "Submit Guess" if code not set
+    submitGuessButton.style.display = "none";
+  }
+}
+
 export {
   displayApp,
   updateSlotUI,
@@ -71,4 +138,9 @@ export {
   reportIncorrectGuess,
   resetSlotsForNextGuess,
   disableSubmitButton,
+  updateTempSlotUI,
+  resetTempSlotsUI,
+  setSecretCode,
+  reRenderSlots,
+  updateUIBasedOnGameState,
 };

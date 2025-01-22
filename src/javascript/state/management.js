@@ -18,6 +18,8 @@ const globalVariables = {
     "black",
   ],
   current_slot_index: 0,
+  temp_secret_code: [],
+  current_temp_slot_index: 0,
 };
 
 function resetAppState() {

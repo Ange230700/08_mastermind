@@ -29,6 +29,17 @@ function generateSlots() {
   return slots;
 }
 
+function generateHeader() {
+  return `
+    <header>
+      <h1 class="app-title">Mastermind Game</h1>
+      <p class="game-description">
+        Try to guess the secret combination of four colors.
+      </p>
+    </header>
+  `;
+}
+
 function generateFooter() {
   return `
     <footer>
@@ -50,21 +61,39 @@ function generateFooter() {
 
 function generateApp() {
   return `
-    <div class="app-container">
-      <h1 class="app-title">Mastermind Game</h1>
-      <p class="instructions">
-        Pick 4 colors and then click "Submit Guess" to see if you cracked the code.
-      </p>
-      <div class="colors-container">
-        ${generateColorButtons()}
+    ${generateHeader()}
+    <div>
+      <div class="app-container">
+        <div class="colors-container">
+          ${generateColorButtons()}
+        </div>
+        <div class="slots-container">
+          ${generateSlots()}
+        </div>
+        <div class="actions-container">
+        <button class="action" id="open-set-code">Set Secret Code</button>
+        <button class="action" id="submit-guess">Submit Guess</button>
+        <button class="action" id="reset-game">Reset Game</button>
+        </div>
+        <p id="message" class="message"></p>
       </div>
-      <div class="slots-container">
-        ${generateSlots()}
+      <div id="secret-code-modal" class="modal hidden">
+        <div class="modal-content">
+          <h2>Set Your Secret Code</h2>
+          <p>Pick 4 colors to set the code:</p>
+          <div class="code-colors-container">
+            ${generateColorButtons()}
+          </div>
+          <div class="code-slots-container">
+            ${generateSlots()}
+          </div>
+          <div class="modal-actions">
+            <button class="action" id="confirm-secret-code">Confirm Code</button>
+            <button class="action" id="cancel-secret-code">Cancel</button>
+          </div>
+          <p id="modal-message"></p>
+        </div>
       </div>
-      <div class="actions-container">
-        <button id="submit-guess">Submit Guess</button>
-      </div>
-      <p id="message" class="message"></p>
     </div>
     ${generateFooter()}
   `;
