@@ -35,7 +35,7 @@ function hasPlayerWon() {
 
 function hasPlayerLost() {
   return (
-    globalVariables.attempts_number_max - globalVariables.attempts_number ===
+    globalVariables.attempts_number_max - globalVariables.attempts_number <=
       0 || false
   );
 }
