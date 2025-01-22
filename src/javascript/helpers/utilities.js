@@ -52,58 +52,57 @@ function removeColorFromColorsArray(index) {
   globalVariables.colors_array.splice(index, 1);
 }
 
-// src\javascript\helpers\utilities.js
-
 /**
- * Returns an object with counts:
- * - wellPlaced: number of colors correct in both color and position
- * - misplaced: number of colors correct in color but incorrect position
- * - notInCode: number of colors not at all in the secret code (or in surplus)
+ * computeClues(guessArray, secretArray)
+ * Returns an object with 3 arrays of colors:
+ *   - wellPlacedColors
+ *   - misplacedColors
+ *   - notInCodeColors
  */
 function computeClues(guessArray, secretArray) {
   // Defensive: both arrays should be length 4
   if (guessArray.length !== secretArray.length) {
-    return { wellPlaced: 0, misplaced: 0, notInCode: guessArray.length };
+    return {
+      wellPlacedColors: [],
+      misplacedColors: [],
+      // everything is "not in code" if length mismatch
+      notInCodeColors: guessArray.slice(),
+    };
   }
 
-  // 1. Identify well-placed
-  let wellPlaced = 0;
-  // We'll build frequency maps to track leftover counts after well-placed are removed
-  const secretFrequency = {};
-  const guessFrequency = {};
+  const wellPlacedColors = [];
+  const leftoverSecret = [];
+  const leftoverGuess = [];
 
-  for (let i = 0; i < secretArray.length; i++) {
+  // 1. Identify well-placed vs. leftovers
+  for (let i = 0; i < 4; i++) {
     if (guessArray[i] === secretArray[i]) {
-      wellPlaced++;
+      wellPlacedColors.push(guessArray[i]);
     } else {
-      // count leftover colors from secret
-      secretFrequency[secretArray[i]] =
-        (secretFrequency[secretArray[i]] || 0) + 1;
-      // count leftover colors from guess
-      guessFrequency[guessArray[i]] = (guessFrequency[guessArray[i]] || 0) + 1;
+      leftoverSecret.push(secretArray[i]);
+      leftoverGuess.push(guessArray[i]);
     }
   }
 
-  // 2. Identify misplaced
-  //   A color is misplaced if it appeared in the secret code but in a different position
-  //   We can only match as many times as it appears in leftover secretFrequency
-  let misplaced = 0;
+  // 2. Identify misplaced vs. not in code
+  const misplacedColors = [];
+  const notInCodeColors = [];
 
-  for (const color in guessFrequency) {
-    if (secretFrequency[color]) {
-      // The number of misplaced occurrences for 'color' is the minimum
-      // of leftover guess occurrences and leftover secret occurrences
-      misplaced += Math.min(guessFrequency[color], secretFrequency[color]);
+  leftoverGuess.forEach((color) => {
+    // If leftoverSecret still contains this color
+    // at some index, treat it as 'misplaced'
+    const idx = leftoverSecret.indexOf(color);
+    if (idx !== -1) {
+      misplacedColors.push(color);
+      // Remove that instance to handle duplicates properly
+      leftoverSecret.splice(idx, 1);
+    } else {
+      // Otherwise, color not found in leftover secret
+      notInCodeColors.push(color);
     }
-  }
+  });
 
-  // 3. Identify not in code
-  //   notInCode = total 4 guessed - wellPlaced - misplaced
-  //   Alternatively, for more advanced logic with duplicates, we might count
-  //   them more precisely, but this approach is simpler.
-  const notInCode = secretArray.length - (wellPlaced + misplaced);
-
-  return { wellPlaced, misplaced, notInCode };
+  return { wellPlacedColors, misplacedColors, notInCodeColors };
 }
 
 export {
