@@ -33,8 +33,8 @@ function generateHeader() {
   return `
     <header>
       <h1 class="app-title">MASTERMIND</h1>
-      <p class="game-description">
-        Try to guess the secret combination of four colors.
+      <p class="game-description" style="padding: 0 1rem;">
+        Mastermind is a classic logic game where you try to guess a secret combination. In that version of the game, they try to find a <strong>4 color combination</strong> among a set of <strong>${globalVariables.possible_colors_list.length} colors</strong>. And you have <strong>${globalVariables.attempts_number_max} attempts</strong> to guess the combination. As a matter of fact, there are ${Math.pow(globalVariables.possible_colors_list.length, 4)} possible combinations. So to help you, there will be <strong>clues</strong> after each guess.
       </p>
     </header>
   `;
@@ -75,7 +75,7 @@ function generateApp() {
           <button class="action" id="submit-guess">Submit Guess</button>
           <button class="action" id="reset-game">Reset Game</button>
         </div>
-        <p id="message" class="message"></p>
+        <p id="message" class="message">First, let's set the secret code. Shall we?</p>
         <div id="clues" class="clues hidden">
           <h3 style="margin: 1rem 0">Clues</h3>
           <p id="well-placed"></p>

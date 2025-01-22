@@ -109,6 +109,10 @@ const handleConfirmSecretCode = () => {
   // Hide the modal
   document.getElementById("secret-code-modal").classList.add("hidden");
 
+  // Show a message that the code is now set
+  document.getElementById("message").innerHTML =
+    "Your secret code is now set. Start guessing!";
+
   // Reset the temporary arrays/slots
   resetTempSecretCode();
   resetTempSlotsUI();
