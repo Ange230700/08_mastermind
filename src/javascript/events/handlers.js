@@ -13,6 +13,7 @@ import {
   resetTempSlotsUI,
   setSecretCode,
   reRenderSlots,
+  updateUIBasedOnGameState,
 } from "../document/manipulation.js";
 import {
   checkIfColorsArrayIsValid,
@@ -30,6 +31,7 @@ import {
   waitForClickOnConfirmSetCodeButton,
   waitForClickOnColorButtonsInModal,
   waitForClickOnSlots,
+  waitForClickOnResetButton,
 } from "./listeners.js";
 
 const handleLoadingOfDomContent = () => {
@@ -43,6 +45,7 @@ const handleLoadingOfDomContent = () => {
   waitForClickOnConfirmSetCodeButton();
   waitForClickOnColorButtonsInModal();
   waitForClickOnSlots();
+  waitForClickOnResetButton();
 };
 
 const handleClickOnColorButtons = (button) => {
@@ -95,6 +98,9 @@ const handleConfirmSecretCode = () => {
   resetTempSlotsUI();
 
   document.getElementById("modal-message").innerHTML = "";
+
+  // <-- Trigger the UI update once the secret code is set
+  updateUIBasedOnGameState();
 };
 
 const handleClickOnOpenSetCodeButton = () => {
@@ -109,7 +115,7 @@ const handleClickOnCancelSetCodeButton = () => {
   resetTempSlotsUI();
 };
 
-export function handleClickOnSlot(slotIndex) {
+const handleClickOnSlot = (slotIndex) => {
   // Only remove if there’s actually a color at that position.
   // (e.g., if the player has filled 3 colors, indices 0, 1, 2 are valid.)
   // If slotIndex is outside the array length, do nothing.
@@ -117,7 +123,29 @@ export function handleClickOnSlot(slotIndex) {
     removeColorFromColorsArray(slotIndex);
     reRenderSlots();
   }
-}
+};
+
+const handleClickOnResetButton = () => {
+  // 1. Reset global state
+  resetAppState();
+
+  // 2. Re-render the empty slots
+  reRenderSlots();
+
+  // 3. Clear messages
+  document.getElementById("message").innerHTML = "";
+
+  // 4. Re-enable "Submit Guess" button
+  const submitButton = document.getElementById("submit-guess");
+  if (submitButton) {
+    submitButton.disabled = false;
+    submitButton.classList.remove("disabled-button");
+    submitButton.innerHTML = "Submit Guess";
+  }
+
+  // 5. Re-show/hide relevant buttons
+  updateUIBasedOnGameState();
+};
 
 export {
   handleLoadingOfDomContent,
@@ -127,4 +155,6 @@ export {
   handleConfirmSecretCode,
   handleClickOnOpenSetCodeButton,
   handleClickOnCancelSetCodeButton,
+  handleClickOnSlot,
+  handleClickOnResetButton,
 };

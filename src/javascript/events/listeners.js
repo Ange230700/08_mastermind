@@ -9,6 +9,7 @@ import {
   handleClickOnCancelSetCodeButton,
   handleClickOnOpenSetCodeButton,
   handleClickOnSlot,
+  handleClickOnResetButton,
 } from "./handlers.js";
 
 function waitForLoadingOfDomContent() {
@@ -68,6 +69,12 @@ function waitForClickOnSlots() {
   });
 }
 
+function waitForClickOnResetButton() {
+  document
+    .getElementById("reset-game")
+    .addEventListener("click", handleClickOnResetButton);
+}
+
 export {
   waitForLoadingOfDomContent,
   waitForClickOnColorButtons,
@@ -77,4 +84,5 @@ export {
   waitForClickOnColorButtonsInModal,
   waitForClickOnConfirmSetCodeButton,
   waitForClickOnSlots,
+  waitForClickOnResetButton,
 };

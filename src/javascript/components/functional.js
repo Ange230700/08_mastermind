@@ -29,6 +29,17 @@ function generateSlots() {
   return slots;
 }
 
+function generateHeader() {
+  return `
+    <header>
+      <h1 class="app-title">Mastermind Game</h1>
+      <p class="game-description">
+        Try to guess the secret combination of four colors.
+      </p>
+    </header>
+  `;
+}
+
 function generateFooter() {
   return `
     <footer>
@@ -50,12 +61,9 @@ function generateFooter() {
 
 function generateApp() {
   return `
+    ${generateHeader()}
     <div>
       <div class="app-container">
-        <h1 class="app-title">Mastermind Game</h1>
-        <p class="instructions">
-          Pick 4 colors and then click <strong>"Submit Guess"</strong> to see if you cracked the code.
-        </p>
         <div class="colors-container">
           ${generateColorButtons()}
         </div>
@@ -63,8 +71,9 @@ function generateApp() {
           ${generateSlots()}
         </div>
         <div class="actions-container">
-          <button class="action" id="open-set-code">Set Secret Code</button>
-          <button class="action" id="submit-guess">Submit Guess</button>
+        <button class="action" id="open-set-code">Set Secret Code</button>
+        <button class="action" id="submit-guess">Submit Guess</button>
+        <button class="action" id="reset-game">Reset Game</button>
         </div>
         <p id="message" class="message"></p>
       </div>
@@ -85,7 +94,7 @@ function generateApp() {
           <p id="modal-message"></p>
         </div>
       </div>
-      </div>
+    </div>
     ${generateFooter()}
   `;
 }

@@ -106,6 +106,29 @@ function reRenderSlots() {
   globalVariables.current_slot_index = globalVariables.colors_array.length;
 }
 
+function updateUIBasedOnGameState() {
+  const setCodeButton = document.getElementById("open-set-code");
+  const submitGuessButton = document.getElementById("submit-guess");
+
+  if (!setCodeButton || !submitGuessButton) return;
+
+  // If secret_code has 4 colors, we assume it's set
+  const isCodeSet = globalVariables.secret_code.length === 4;
+
+  if (isCodeSet) {
+    // Hide "Set Secret Code"
+    setCodeButton.style.display = "none";
+    // Show "Submit Guess"
+    submitGuessButton.style.display = "inline-block";
+    submitGuessButton.disabled = false;
+  } else {
+    // Show "Set Secret Code"
+    setCodeButton.style.display = "inline-block";
+    // Hide or disable "Submit Guess" if code not set
+    submitGuessButton.style.display = "none";
+  }
+}
+
 export {
   displayApp,
   updateSlotUI,
@@ -119,4 +142,5 @@ export {
   resetTempSlotsUI,
   setSecretCode,
   reRenderSlots,
+  updateUIBasedOnGameState,
 };
