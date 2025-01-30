@@ -11,20 +11,12 @@ import {
   updateSlotUI,
   updateTempSlotUI,
   resetTempSlotsUI,
-  setSecretCode,
   reRenderSlots,
   updateButtonStates,
   reportClues,
 } from "../document/manipulation.js";
-import {
-  checkIfColorsArrayIsValid,
-  hasPlayerLost,
-  hasPlayerWon,
-  resetTempSecretCode,
-  removeColorFromColorsArray,
-  computeClues,
-} from "../helpers/utilities.js";
-import { globalVariables, resetAppState } from "../state/management.js";
+import { computeClues } from "../helpers/utilities.js";
+import { MastermindState } from "../state/management.js";
 import {
   waitForClickOnColorButtons,
   waitForClickOnSubmitButton,
@@ -38,7 +30,7 @@ import {
 
 const handleLoadingOfDomContent = () => {
   displayApp();
-  resetAppState();
+  MastermindState.resetAppState();
 
   waitForClickOnColorButtons();
   waitForClickOnSubmitButton();
@@ -58,14 +50,14 @@ const handleClickOnColorButtons = (button) => {
 };
 
 const handleClickOnSubmitButton = () => {
-  if (!checkIfColorsArrayIsValid()) {
+  if (!MastermindState.checkIfColorsArrayIsValid()) {
     reportIssueIfInvalidAttempt();
     return;
   }
 
-  globalVariables.attempts_number++;
+  MastermindState.incrementAttemptsNumber();
 
-  if (hasPlayerWon()) {
+  if (MastermindState.hasPlayerWon()) {
     const cluesDiv = document.getElementById("clues");
     cluesDiv.classList.add("hidden");
     reportVictory();
@@ -74,7 +66,7 @@ const handleClickOnSubmitButton = () => {
     return;
   }
 
-  if (hasPlayerLost()) {
+  if (MastermindState.hasPlayerLost()) {
     const cluesDiv = document.getElementById("clues");
     cluesDiv.classList.add("hidden");
     reportLoss();
@@ -84,7 +76,10 @@ const handleClickOnSubmitButton = () => {
   }
 
   reportClues(
-    computeClues(globalVariables.colors_array, globalVariables.secret_code),
+    computeClues(
+      MastermindState.getColorsArray(),
+      MastermindState.getSecretCode(),
+    ),
   );
 
   reportIncorrectGuess();
@@ -97,14 +92,14 @@ const handleColorButtonForSecretCode = (button) => {
 };
 
 const handleConfirmSecretCode = () => {
-  if (globalVariables.temp_secret_code.length !== 4) {
+  if (MastermindState.getTempSecretCode().length !== 4) {
     document.getElementById("modal-message").innerHTML =
       "Please select exactly 4 colors for the secret code.";
     return;
   }
 
   // Set the real secret code
-  setSecretCode(globalVariables.temp_secret_code);
+  MastermindState.setSecretCode(MastermindState.getTempSecretCode());
 
   // Hide the modal
   document.getElementById("secret-code-modal").classList.add("hidden");
@@ -114,7 +109,7 @@ const handleConfirmSecretCode = () => {
     "Your secret code is now set. Start guessing!";
 
   // Reset the temporary arrays/slots
-  resetTempSecretCode();
+  MastermindState.resetTempSecretCode();
   resetTempSlotsUI();
 
   document.getElementById("modal-message").innerHTML = "";
@@ -131,19 +126,19 @@ const handleClickOnOpenSetCodeButton = () => {
 const handleClickOnCancelSetCodeButton = () => {
   // Hide modal, reset the temp arrays/slots
   document.getElementById("secret-code-modal").classList.add("hidden");
-  resetTempSecretCode();
+  MastermindState.resetTempSecretCode();
   resetTempSlotsUI();
 };
 
 const handleClickOnSlot = (slotIndex) => {
-  removeColorFromColorsArray(slotIndex);
+  MastermindState.removeColorFromColorsArray(slotIndex);
   reRenderSlots();
   updateButtonStates();
 };
 
 const handleClickOnResetButton = () => {
   // 1. Reset global state
-  resetAppState();
+  MastermindState.resetAppState();
 
   // 2. Re-render the empty slots
   reRenderSlots();

@@ -1,9 +1,9 @@
 // src\javascript\components\functional.js
 
-import { globalVariables } from "../state/management";
+import { MastermindState } from "../state/management.js";
 
 function generateColorButtons() {
-  return globalVariables.possible_colors_list
+  return MastermindState.getPossibleColorsList()
     .map(
       (color) => `
         <button 
@@ -34,7 +34,7 @@ function generateHeader() {
     <header>
       <h1 class="app-title">MASTERMIND</h1>
       <p class="game-description" style="padding: 0 1rem;">
-        Mastermind is a classic logic game where you try to guess a secret combination. In that version of the game, they try to find a <strong>4 color combination</strong> among a set of <strong>${globalVariables.possible_colors_list.length} colors</strong>. And you have <strong>${globalVariables.attempts_number_max} attempts</strong> to guess the combination. As a matter of fact, there are ${Math.pow(globalVariables.possible_colors_list.length, 4)} possible combinations. So to help you, there will be <strong>clues</strong> after each guess.
+        Mastermind is a classic logic game where you try to guess a secret combination. In that version of the game, they try to find a <strong>4 color combination</strong> among a set of <strong>${MastermindState.getPossibleColorsList().length} colors</strong>. And you have <strong>${MastermindState.getAttemptsNumberMax()} attempts</strong> to guess the combination. As a matter of fact, there are ${Math.pow(MastermindState.getPossibleColorsList().length, 4)} possible combinations. So to help you, there will be <strong>clues</strong> after each guess.
       </p>
     </header>
   `;
