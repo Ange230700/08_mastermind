@@ -33,7 +33,6 @@ function reportIssueIfInvalidAttempt() {
 function reportVictory() {
   document.getElementById("message").innerHTML =
     "You guessed the secret code! You win!";
-  return;
 }
 
 function reportLoss() {
