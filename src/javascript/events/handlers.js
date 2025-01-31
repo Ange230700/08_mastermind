@@ -15,6 +15,11 @@ import {
   updateButtonStates,
   reportClues,
   showSecretCodeModal,
+  reportBoundaryViolation,
+  reportStartOfGame,
+  removeAnyReport,
+  getHtmlElement,
+  hideElement,
 } from "../document/manipulation.js";
 import { computeClues } from "../helpers/utilities.js";
 import { MastermindState } from "../state/management.js";
@@ -48,6 +53,14 @@ const handleLoadingOfDomContent = () => {
 };
 
 const handleClickOnColorButtons = (button, app) => {
+  const colorsArray = MastermindState.getColorsArray();
+  const slotsCount = MastermindState.getSlotsCount();
+
+  if (colorsArray.length >= slotsCount) {
+    reportBoundaryViolation(app, slotsCount);
+    return;
+  }
+
   updateSlotUI(button, app);
   updateButtonStates(app);
 };
@@ -63,8 +76,8 @@ const handleClickOnSubmitButton = (app) => {
 
   const hasPlayerWon = MastermindState.hasPlayerWon();
   if (hasPlayerWon) {
-    const cluesSection = app.querySelector("#clues");
-    cluesSection.classList.add("hidden");
+    const cluesSection = getHtmlElement(app, "#clues");
+    hideElement(cluesSection);
 
     reportVictory(app);
     disableSubmitButton(app);
@@ -74,7 +87,7 @@ const handleClickOnSubmitButton = (app) => {
 
   if (MastermindState.hasPlayerLost()) {
     const cluesSection = app.getElementById("clues");
-    cluesSection.classList.add("hidden");
+    hideElement(cluesSection);
 
     reportLoss(app);
     disableSubmitButton(app);
@@ -100,25 +113,24 @@ const handleColorButtonForSecretCode = (button, app) => {
 
 const handleConfirmSecretCode = (app) => {
   const temporarySecretCode = MastermindState.getTemporarySecretCode();
-  if (temporarySecretCode.length !== 4) {
-    const modalReportArea = app.querySelector("#modal-message");
-    modalReportArea.innerHTML =
-      "Please select exactly 4 colors for the secret code.";
+  const slotsCount = MastermindState.getSlotsCount();
+  if (temporarySecretCode.length !== slotsCount) {
+    const modalReportArea = getHtmlElement(app, "#modal-message");
+    modalReportArea.innerHTML = `Please select exactly ${slotsCount} colors for the secret code.`;
     return;
   }
 
   MastermindState.setSecretCode(MastermindState.getTemporarySecretCode());
 
-  const secretCodeModal = app.querySelector("#secret-code-modal");
-  secretCodeModal.classList.add("hidden");
+  const secretCodeModal = getHtmlElement(app, "#secret-code-modal");
+  hideElement(secretCodeModal);
 
-  const reportArea = app.querySelector("#message");
-  reportArea.innerHTML = "Your secret code is now set. Start guessing!";
+  reportStartOfGame(app);
 
   MastermindState.resetTemporarySecretCode();
   resetTemporarySlotsUI(secretCodeModal);
 
-  const modalReportArea = app.querySelector("#modal-message");
+  const modalReportArea = getHtmlElement(app, "#modal-message");
   modalReportArea.innerHTML = "";
 
   updateButtonStates(app);
@@ -129,8 +141,8 @@ const handleClickOnOpenSetCodeButton = (app) => {
 };
 
 const handleClickOnCancelSetCodeButton = (app) => {
-  const secretCodeModal = app.querySelector("#secret-code-modal");
-  secretCodeModal.classList.add("hidden");
+  const secretCodeModal = getHtmlElement(app, "#secret-code-modal");
+  hideElement(secretCodeModal);
   MastermindState.resetTemporarySecretCode();
   resetTemporarySlotsUI(secretCodeModal);
 };
@@ -146,17 +158,16 @@ const handleClickOnResetButton = (app) => {
 
   reRenderSlots(app);
 
-  const reportArea = app.querySelector("#message");
-  reportArea.innerHTML = "";
+  removeAnyReport(app);
 
-  const submitButton = app.querySelector("#submit-guess");
+  const submitButton = getHtmlElement(app, "#submit-guess");
   if (submitButton) {
     submitButton.disabled = false;
     submitButton.innerHTML = "Submit Guess";
   }
 
-  const cluesSection = app.querySelector("#clues");
-  cluesSection.classList.add("hidden");
+  const cluesSection = getHtmlElement(app, "#clues");
+  hideElement(cluesSection);
 
   updateButtonStates(app);
 };

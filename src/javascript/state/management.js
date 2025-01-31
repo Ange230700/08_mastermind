@@ -1,23 +1,25 @@
 // src\javascript\state\management.js
 
+import { GAME_DEFAULTS } from "./game_configuration.js";
+
 export const MastermindState = (() => {
   let secret_code = [];
   let attempts_number = 0;
-  let attempts_number_max = 12;
+  let attempts_number_max = GAME_DEFAULTS.MAX_ATTEMPTS;
   let colors_array = [];
-  let possible_colors_list = [
-    "red",
-    "orange",
-    "yellow",
-    "green",
-    "blue",
-    "indigo",
-    "violet",
-    "black",
-  ];
+  let possible_colors_list = GAME_DEFAULTS.POSSIBLE_COLORS_LIST;
+  let slots_count = GAME_DEFAULTS.SLOTS_COUNT;
   let current_slot_index = 0;
   let temp_secret_code = [];
   let current_temp_slot_index = 0;
+
+  function setSlotCount(count) {
+    slots_count = count;
+  }
+
+  function getSlotsCount() {
+    return slots_count;
+  }
 
   function resetAppState() {
     secret_code = [];
@@ -39,12 +41,16 @@ export const MastermindState = (() => {
   function checkIfColorsArrayIsValid() {
     return (
       Array.isArray(colors_array) &&
-      colors_array.length === 4 &&
+      colors_array.length === slots_count &&
       colors_array.every((color) => possible_colors_list.includes(color))
     );
   }
 
   function checkIfColorsArrayIsStrictlyEqualsToSecretCode() {
+    if (colors_array.length !== secret_code.length) {
+      return false;
+    }
+
     for (let index in secret_code) {
       if (colors_array[index] !== secret_code[index]) {
         return false;
@@ -159,5 +165,7 @@ export const MastermindState = (() => {
     getSecretCode,
     setSecretCode,
     updateCurrentSlotIndex,
+    setSlotCount,
+    getSlotsCount,
   };
 })();

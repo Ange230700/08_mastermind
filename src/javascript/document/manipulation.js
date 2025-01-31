@@ -3,8 +3,24 @@
 import { generateApp } from "../components/functional.js";
 import { MastermindState } from "../state/management.js";
 
+function showElement(element) {
+  element.classList.remove("hidden");
+}
+
+function hideElement(element) {
+  element.classList.add("hidden");
+}
+
+function getHtmlElement(originElement, cssSelector) {
+  return originElement.querySelector(cssSelector);
+}
+
+function getHtmlElementsArray(originElement, cssSelector) {
+  return originElement.querySelectorAll(cssSelector);
+}
+
 function displayApp() {
-  const app = document.querySelector("#app");
+  const app = getHtmlElement(document, "#app");
 
   app.innerHTML = `
     ${generateApp()}
@@ -15,43 +31,42 @@ function displayApp() {
 
 function updateSlotUI(button, app) {
   const colorsArray = MastermindState.getColorsArray();
+  const secretCode = MastermindState.getSecretCode();
 
-  if (colorsArray.length < 4) {
-    MastermindState.addChosenColorToColorsArray(
-      button.getAttribute("data-color"),
-    );
+  if (colorsArray.length < secretCode.length) {
+    const color = button.getAttribute("data-color");
+    MastermindState.addChosenColorToColorsArray(color);
 
-    const slotsArray = app.querySelectorAll(".slot");
+    const slotsArray = getHtmlElementsArray(app, ".slot");
 
     const currentSlotIndex = MastermindState.getCurrentSlotIndex();
 
-    slotsArray[currentSlotIndex].style.backgroundColor =
-      button.getAttribute("data-color");
+    slotsArray[currentSlotIndex].style.backgroundColor = color;
 
     MastermindState.incrementCurrentSlotIndex();
   }
 }
 
 function reportIssueIfInvalidAttempt(app) {
-  const reportArea = app.querySelector("#message");
+  const reportArea = getHtmlElement(app, "#message");
 
   reportArea.innerHTML = "Please select exactly 4 colors.";
 }
 
 function reportVictory(app) {
-  const reportArea = app.querySelector("#message");
+  const reportArea = getHtmlElement(app, "#message");
 
   reportArea.innerHTML = "You guessed the secret code! You win!";
 }
 
 function reportLoss(app) {
-  const reportArea = app.querySelector("#message");
+  const reportArea = getHtmlElement(app, "#message");
 
   reportArea.innerHTML = "No more attempts left. You lost!";
 }
 
 function reportIncorrectGuess(app) {
-  const reportArea = app.querySelector("#message");
+  const reportArea = getHtmlElement(app, "#message");
   const attemptsNumberMax = MastermindState.getAttemptsNumberMax();
   const attemptsNumber = MastermindState.getAttemptsNumber();
 
@@ -61,7 +76,7 @@ function reportIncorrectGuess(app) {
 function resetSlotsForNextGuess(app) {
   MastermindState.resetColorsArray();
 
-  const slotsArray = app.querySelectorAll(".slot");
+  const slotsArray = getHtmlElementsArray(app, ".slot");
 
   slotsArray.forEach((slot) => {
     slot.style.backgroundColor = "var(--primary-color-shade-7)";
@@ -70,22 +85,28 @@ function resetSlotsForNextGuess(app) {
   MastermindState.resetCurrentSlotIndex();
 }
 
+function disableButton(button) {
+  button.disabled = true;
+  button.style.backgroundColor = "var(--primary-color-shade-7)";
+  button.style.color = "var(--primary-color-shade-3)";
+  button.style.opacity = 0.5;
+  button.style.cursor = "not-allowed";
+}
+
 function disableSubmitButton(app) {
-  const submitButton = app.querySelector("#submit-guess");
+  const submitButton = getHtmlElement(app, "#submit-guess");
   if (submitButton) {
-    submitButton.disabled = true;
-    submitButton.style.backgroundColor = "var(--primary-color-shade-7)";
-    submitButton.style.color = "var(--primary-color-shade-3)";
-    submitButton.style.opacity = 0.5;
-    submitButton.style.cursor = "not-allowed";
-    submitButton.innerHTML = "Game Over";
+    disableButton(submitButton);
   }
 }
 
 function updateTemporarySlotUI(button, app) {
   if (MastermindState.getTemporarySecretCode().length < 4) {
     const color = button.getAttribute("data-color");
-    const modalSlotsArray = app.querySelectorAll("#secret-code-modal .slot");
+    const modalSlotsArray = getHtmlElementsArray(
+      app,
+      "#secret-code-modal .slot",
+    );
     const currentTemporarySlotIndex =
       MastermindState.getCurrentTemporarySlotIndex();
 
@@ -96,7 +117,7 @@ function updateTemporarySlotUI(button, app) {
 }
 
 function resetTemporarySlotsUI(secretCodeModal) {
-  const modalSlotsArray = secretCodeModal.querySelectorAll(".slot");
+  const modalSlotsArray = getHtmlElementsArray(secretCodeModal, ".slot");
   modalSlotsArray.forEach(
     (slot) => (slot.style.backgroundColor = "var(--primary-color-shade-7)"),
   );
@@ -105,7 +126,7 @@ function resetTemporarySlotsUI(secretCodeModal) {
 }
 
 function reRenderSlots(app) {
-  const slots = app.querySelectorAll(".slot");
+  const slots = getHtmlElementsArray(app, ".slot");
 
   slots.forEach((slot) => {
     slot.style.backgroundColor = "var(--primary-color-shade-7)";
@@ -120,9 +141,9 @@ function reRenderSlots(app) {
 }
 
 function updateButtonStates(app) {
-  const setCodeButton = app.querySelector("#open-set-code");
-  const submitButton = app.querySelector("#submit-guess");
-  const resetButton = app.querySelector("#reset-game");
+  const setCodeButton = getHtmlElement(app, "#open-set-code");
+  const submitButton = getHtmlElement(app, "#submit-guess");
+  const resetButton = getHtmlElement(app, "#reset-game");
 
   if (!setCodeButton || !submitButton || !resetButton) return;
 
@@ -143,12 +164,18 @@ function reportClues(
   { wellPlacedColors, misplacedColors, notInCodeColors },
   app,
 ) {
-  const cluesSection = app.querySelector("#clues");
-  const wellPlacedColorsReportArea = cluesSection.querySelector("#well-placed");
-  const misplacedColorsReportArea = cluesSection.querySelector("#misplaced");
-  const notInCodeColorsReportArea = cluesSection.querySelector("#not-in-code");
+  const cluesSection = getHtmlElement(app, "#clues");
+  const wellPlacedColorsReportArea = getHtmlElement(
+    cluesSection,
+    "#well-placed",
+  );
+  const misplacedColorsReportArea = getHtmlElement(cluesSection, "#misplaced");
+  const notInCodeColorsReportArea = getHtmlElement(
+    cluesSection,
+    "#not-in-code",
+  );
 
-  cluesSection.classList.remove("hidden");
+  showElement(cluesSection);
 
   wellPlacedColorsReportArea.innerHTML =
     "<strong>Well placed</strong>: " + (wellPlacedColors.join(", ") || "None");
@@ -159,12 +186,31 @@ function reportClues(
 }
 
 function showSecretCodeModal(app) {
-  const secretCodeModal = app.querySelector("#secret-code-modal");
+  const secretCodeModal = getHtmlElement(app, "#secret-code-modal");
 
-  secretCodeModal.classList.remove("hidden");
+  showElement(secretCodeModal);
+}
+
+function reportBoundaryViolation(app, slotsCount) {
+  const reportArea = getHtmlElement(app, "#message");
+  reportArea.innerHTML = `You already have ${slotsCount} colors selected. Click a slot to remove one if you want to change your guess.`;
+}
+
+function reportStartOfGame(app) {
+  const reportArea = getHtmlElement(app, "#message");
+  reportArea.innerHTML = "Your secret code is now set. Start guessing!";
+}
+
+function removeAnyReport(app) {
+  const reportArea = getHtmlElement(app, "#message");
+  reportArea.innerHTML = "";
 }
 
 export {
+  showElement,
+  hideElement,
+  getHtmlElement,
+  getHtmlElementsArray,
   displayApp,
   updateSlotUI,
   reportIssueIfInvalidAttempt,
@@ -179,4 +225,7 @@ export {
   updateButtonStates,
   reportClues,
   showSecretCodeModal,
+  reportBoundaryViolation,
+  reportStartOfGame,
+  removeAnyReport,
 };

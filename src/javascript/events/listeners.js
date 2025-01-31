@@ -1,6 +1,10 @@
 // src\javascript\events\listeners.js
 
 import {
+  getHtmlElement,
+  getHtmlElementsArray,
+} from "../document/manipulation.js";
+import {
   handleClickOnColorButtons,
   handleClickOnSubmitButton,
   handleLoadingOfDomContent,
@@ -17,7 +21,8 @@ function waitForLoadingOfDomContent() {
 }
 
 function waitForClickOnColorButtons(app) {
-  const colorButtonsArray = app.querySelectorAll(
+  const colorButtonsArray = getHtmlElementsArray(
+    app,
     ".colors-container .color-button",
   );
   colorButtonsArray.forEach((button) => {
@@ -28,28 +33,29 @@ function waitForClickOnColorButtons(app) {
 }
 
 function waitForClickOnSubmitButton(app) {
-  const submitGuessButton = app.querySelector("#submit-guess");
+  const submitGuessButton = getHtmlElement(app, "#submit-guess");
   submitGuessButton.addEventListener("click", () => {
     handleClickOnSubmitButton(app);
   });
 }
 
 function waitForClickOnOpenSetCodeButton(app) {
-  const modalButton = app.querySelector("#open-set-code");
+  const modalButton = getHtmlElement(app, "#open-set-code");
   modalButton.addEventListener("click", () => {
     handleClickOnOpenSetCodeButton(app);
   });
 }
 
 function waitForClickOnCancelSetCodeButton(app) {
-  const cancelButton = app.querySelector("#cancel-secret-code");
+  const cancelButton = getHtmlElement(app, "#cancel-secret-code");
   cancelButton.addEventListener("click", () => {
     handleClickOnCancelSetCodeButton(app);
   });
 }
 
 function waitForClickOnColorButtonsInModal(app) {
-  const modalColorButtonsArray = app.querySelectorAll(
+  const modalColorButtonsArray = getHtmlElementsArray(
+    app,
     "#secret-code-modal .color-button",
   );
   modalColorButtonsArray.forEach((button) => {
@@ -60,14 +66,14 @@ function waitForClickOnColorButtonsInModal(app) {
 }
 
 function waitForClickOnConfirmSetCodeButton(app) {
-  const confirmButton = app.querySelector("#confirm-secret-code");
+  const confirmButton = getHtmlElement(app, "#confirm-secret-code");
   confirmButton.addEventListener("click", () => {
     handleConfirmSecretCode(app);
   });
 }
 
 function waitForClickOnSlots(app) {
-  const slotsArray = app.querySelectorAll(".slot");
+  const slotsArray = getHtmlElementsArray(app, ".slot");
   slotsArray.forEach((slot) => {
     slot.addEventListener("click", () => {
       const slotIndex = Number(slot.getAttribute("data-slot-index"));
@@ -77,7 +83,7 @@ function waitForClickOnSlots(app) {
 }
 
 function waitForClickOnResetButton(app) {
-  const resetButton = app.querySelector("#reset-game");
+  const resetButton = getHtmlElement(app, "#reset-game");
   resetButton.addEventListener("click", () => {
     handleClickOnResetButton(app);
   });

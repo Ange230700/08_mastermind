@@ -18,12 +18,11 @@ function generateColorButtons() {
 }
 
 function generateSlots() {
+  const slotsCount = MastermindState.getSlotsCount();
   let slots = "";
 
-  for (let index = 0; index < 4; index++) {
-    slots += `
-      <div class="slot" data-slot-index="${index}"></div>
-    `;
+  for (let index = 0; index < slotsCount; index++) {
+    slots += `<div class="slot" data-slot-index="${index}"></div>`;
   }
 
   return slots;
@@ -34,7 +33,7 @@ function generateHeader() {
     <header>
       <h1 class="app-title">MASTERMIND</h1>
       <p class="game-description" style="padding: 0 1rem;">
-        Mastermind is a classic logic game where you try to guess a secret combination. In that version of the game, they try to find a <strong>4 color combination</strong> among a set of <strong>${MastermindState.getPossibleColorsList().length} colors</strong>. And you have <strong>${MastermindState.getAttemptsNumberMax()} attempts</strong> to guess the combination. As a matter of fact, there are ${Math.pow(MastermindState.getPossibleColorsList().length, 4)} possible combinations. So to help you, there will be <strong>clues</strong> after each guess.
+        Mastermind is a classic logic game where you try to guess a secret combination. In that version of the game, they try to find a <strong>${MastermindState.getSlotsCount()} color combination</strong> among a set of <strong>${MastermindState.getPossibleColorsList().length} colors</strong>. And you have <strong>${MastermindState.getAttemptsNumberMax()} attempts</strong> to guess the combination. As a matter of fact, there are ${Math.pow(MastermindState.getPossibleColorsList().length, 4)} possible combinations. So to help you, there will be <strong>clues</strong> after each guess.
       </p>
     </header>
   `;
