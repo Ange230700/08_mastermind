@@ -76,12 +76,12 @@ function generateApp() {
           <button class="action" id="reset-game">Reset Game</button>
         </div>
         <p id="message" class="message">First, let's set the secret code. Shall we?</p>
-        <div id="clues" class="clues hidden">
+        <section id="clues" class="clues hidden">
           <h3 style="margin: 1rem 0">Clues</h3>
           <p id="well-placed"></p>
           <p id="misplaced"></p>
           <p id="not-in-code"></p>
-        </div>
+        </section>
       </div>
       <div id="secret-code-modal" class="modal hidden">
         <div class="modal-content">

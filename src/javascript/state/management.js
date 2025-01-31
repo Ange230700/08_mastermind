@@ -62,11 +62,11 @@ export const MastermindState = (() => {
     return attempts_number_max - attempts_number <= 0 || false;
   }
 
-  function resetTempSecretCode() {
+  function resetTemporarySecretCode() {
     temp_secret_code = [];
   }
 
-  function addColorToTempSecretCode(color) {
+  function addColorToTemporarySecretCode(color) {
     temp_secret_code.push(color);
   }
 
@@ -86,15 +86,15 @@ export const MastermindState = (() => {
     current_slot_index = 0;
   }
 
-  function getCurrentTempSlotIndex() {
+  function getCurrentTemporarySlotIndex() {
     return current_temp_slot_index;
   }
 
-  function incrementCurrentTempSlotIndex() {
+  function incrementCurrentTemporarySlotIndex() {
     current_temp_slot_index += 1;
   }
 
-  function resetCurrentTempSlotIndex() {
+  function resetCurrentTemporarySlotIndex() {
     current_temp_slot_index = 0;
   }
 
@@ -118,7 +118,7 @@ export const MastermindState = (() => {
     return colors_array;
   }
 
-  function getTempSecretCode() {
+  function getTemporarySecretCode() {
     return temp_secret_code;
   }
 
@@ -141,21 +141,21 @@ export const MastermindState = (() => {
     checkIfColorsArrayIsValid,
     hasPlayerWon,
     hasPlayerLost,
-    resetTempSecretCode,
-    addColorToTempSecretCode,
+    resetTemporarySecretCode,
+    addColorToTemporarySecretCode,
     removeColorFromColorsArray,
     getCurrentSlotIndex,
     incrementCurrentSlotIndex,
     resetCurrentSlotIndex,
-    getCurrentTempSlotIndex,
-    incrementCurrentTempSlotIndex,
-    resetCurrentTempSlotIndex,
+    getCurrentTemporarySlotIndex,
+    incrementCurrentTemporarySlotIndex,
+    resetCurrentTemporarySlotIndex,
     getPossibleColorsList,
     getAttemptsNumberMax,
     getColorsArray,
     getAttemptsNumber,
     incrementAttemptsNumber,
-    getTempSecretCode,
+    getTemporarySecretCode,
     getSecretCode,
     setSecretCode,
     updateCurrentSlotIndex,
